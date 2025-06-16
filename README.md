@@ -1,0 +1,1 @@
+<h1>gRPC Auth Service</h1>
