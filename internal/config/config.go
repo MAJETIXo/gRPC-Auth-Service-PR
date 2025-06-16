@@ -3,31 +3,43 @@ package config
 import (
 	"log"
 	"os"
-
-	"github.com/joho/godotenv"
+	"strconv"
 )
 
 type Config struct {
-	DatabaseURL string
-	JWTSecret   string
+	DatabaseURL          string
+	GRPCServerAddress    string
+	JWTSecret            string
+	TokenExpirationHours int
 }
 
 func LoadConfig() *Config {
-	if err := godotenv.Load(); err != nil {
-		log.Printf("No .env file found, loading config from environment variables. Error: %v", err)
-	}
-
-	cfg := &Config{
-		DatabaseURL: os.Getenv("DATABASE_URL"),
-		JWTSecret:   os.Getenv("JWT_SECRET"),
-	}
-
-	if cfg.DatabaseURL == "" {
+	dbURL := os.Getenv("DATABASE_URL")
+	if dbURL == "" {
 		log.Fatal("DATABASE_URL environment variable is not set")
 	}
-	if cfg.JWTSecret == "" {
+
+	grpcAddr := os.Getenv("GRPC_SERVER_ADDRESS")
+	if grpcAddr == "" {
+		grpcAddr = ":50051"
+	}
+
+	jwtSecret := os.Getenv("JWT_SECRET")
+	if jwtSecret == "" {
 		log.Fatal("JWT_SECRET environment variable is not set")
 	}
 
-	return cfg
+	tokenExpStr := os.Getenv("JWT_TOKEN_EXPIRATION_HOURS")
+	tokenExp, err := strconv.Atoi(tokenExpStr)
+	if err != nil || tokenExp <= 0 {
+		log.Printf("JWT_TOKEN_EXPIRATION_HOURS is not set or invalid, defaulting to 24 hours. Error: %v", err)
+		tokenExp = 24
+	}
+
+	return &Config{
+		DatabaseURL:          dbURL,
+		GRPCServerAddress:    grpcAddr,
+		JWTSecret:            jwtSecret,
+		TokenExpirationHours: tokenExp,
+	}
 }
