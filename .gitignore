@@ -1,0 +1,43 @@
+# Go binaries and packages
+*.exe
+*.dll
+*.so
+*.dylib
+*.a
+*.obj
+*.prof
+
+# Test binary (generated when running go test)
+*.test
+
+# Output of 'go build'
+*.out
+
+# Dependency directories (golang.org/x/...)
+vendor/
+
+# Go module cache (usually ignored for specific setups, but generally not needed in repo)
+# go.mod
+# go.sum
+
+# Environment variables
+*.env
+.env
+.env.*
+.flaskenv
+
+# IDE and editor specific files
+.idea/          # JetBrains IDEs (GoLand, IntelliJ, etc.)
+.vscode/        # VS Code
+*.iml           # IntelliJ IDEA project files
+*.sublime-project # Sublime Text project files
+*.sublime-workspace # Sublime Text workspace files
+*.DS_Store      # macOS hidden files
+Thumbs.db       # Windows thumbnail cache
+
+# Logs and temporary files
+*.log
+tmp/
+temp/
+.idea
+*.idea
