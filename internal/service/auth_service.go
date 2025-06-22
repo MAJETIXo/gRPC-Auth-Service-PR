@@ -86,8 +86,6 @@ func (s *AuthServiceServer) Login(ctx context.Context, req *pb.LoginRequest) (*p
 
 	err = security.CheckPassword(user.PasswordHash, req.GetPassword()) // <-- Используем пакет security
 	if err != nil {
-		// Ошибка согласно правке: не показывать в чем ошибка.
-		// bcrypt.ErrMismatchedHashAndPassword - это внутренняя деталь.
 		if err == bcrypt.ErrMismatchedHashAndPassword {
 			return nil, fmt.Errorf("invalid username or password") // Общая ошибка
 		}
